@@ -91,6 +91,10 @@ function init() {
      console.log('getUserMedia not supported on your browser!');
   }
 
+  var sampleRate = audioCtx.sampleRate;
+
+  var printed = false;
+
   function visualize() {
     WIDTH = canvas.width;
     HEIGHT = canvas.height;
@@ -117,6 +121,9 @@ function init() {
         var most = null;
         for(var i = 0; i < bufferLengthAlt; i++) {
           barHeight = dataArrayAlt[i];
+          if (!printed) {
+            console.log(i, barHeight);
+          }
           if (most == null || barHeight > dataArrayAlt[most]) {
             most = i;
           }
@@ -126,7 +133,9 @@ function init() {
 
           x += barWidth + 1;
         }
-        console.log(i * analyser.fftSize);
+
+        printed = true;
+        console.log(i * (sampleRate / bufferLengthAlt));
       };
 
       drawAlt();
