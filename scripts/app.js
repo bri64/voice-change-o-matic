@@ -58,10 +58,6 @@ function init() {
 
   var gainNode = audioCtx.createGain();
 
-  // grab audio track via XHR for convolver node
-
-  var soundSource;
-
   // set up canvas context for visualizer
 
   var canvas = document.querySelector('.visualizer');
@@ -118,15 +114,19 @@ function init() {
         var barHeight;
         var x = 0;
 
+        var most = null;
         for(var i = 0; i < bufferLengthAlt; i++) {
           barHeight = dataArrayAlt[i];
-          console.log(barHeight);
+          if (most == null || barHeight > dataArrayAlt[most]) {
+            most = i;
+          }
 
           canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
           canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight/2);
 
           x += barWidth + 1;
         }
+        console.log(i * analyser.fftSize);
       };
 
       drawAlt();
