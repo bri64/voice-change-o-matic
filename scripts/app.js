@@ -50,12 +50,13 @@ function init() {
   var mute = document.querySelector('.mute');
 
   //set up the different audio nodes we will use for the app
-  var gainNode = audioCtx.createGain();
 
   var analyser = audioCtx.createAnalyser();
   analyser.minDecibels = -90;
   analyser.maxDecibels = -10;
   analyser.smoothingTimeConstant = 0.85;
+
+  var gainNode = audioCtx.createGain();
 
   // grab audio track via XHR for convolver node
 
@@ -83,6 +84,7 @@ function init() {
         .then(
           function(stream) {
              source = audioCtx.createMediaStreamSource(stream);
+             source.connect(gainNode);
              gainNode.connect(analyser);
              analyser.connect(audioCtx.destination);
 
